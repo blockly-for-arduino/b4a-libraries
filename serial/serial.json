@@ -1,0 +1,125 @@
+{
+    "category": "串口",
+    "icon": "fa-light fa-arrow-right-arrow-left",
+    "colour": "#48c2c4",
+    "version": "0.0.1",
+    "blocks": [
+        {
+            "inputsInline": true,
+            "message0": "初始化串口%1 设置波特率为%2",
+            "type": "serial_begin",
+            "colour": "#48c2c4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SERIAL",
+                    "options": "${board.serialPort}"
+                },
+                {
+                    "type": "field_number",
+                    "name": "SPEED",
+                    "value": 9600
+                }
+            ],
+            "toolbox": {
+                "show": true
+            },
+            "b4a": {
+                "code": "${SERIAL}.begin(${SPEED});"
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "message0": "串口%1缓冲区有数据",
+            "type": "serial_available",
+            "colour": "#48c2c4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SERIAL",
+                    "options": "${board.serialPort}"
+                }
+            ],
+            "toolbox": {
+                "show": true
+            },
+            "b4a": {
+                "code": "${SERIAL}.available();"
+            },
+            "output": "Number"
+        },
+        {
+            "inputsInline": true,
+            "message0": "读取串口%1数据",
+            "type": "serial_read",
+            "colour": "#48c2c4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SERIAL",
+                    "options": "${board.serialPort}"
+                }
+            ],
+            "toolbox": {
+                "show": true
+            },
+            "b4a": {
+                "code": "serial.read();"
+            },
+            "output": "Any"
+        },
+        {
+            "inputsInline": true,
+            "message0": "串口%1输出%2",
+            "type": "serial_print",
+            "colour": "#48c2c4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SERIAL",
+                    "options": "${board.serialPort}"
+                },
+                {
+                    "type": "input_value",
+                    "name": "VAR"
+                }
+            ],
+            "toolbox": {
+                "show": true,
+                "category": "串口"
+            },
+            "b4a": {
+                "code": "${SERIAL}.print(${VAR});"
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "message0": "串口%1输出%2并换行",
+            "type": "serial_println",
+            "colour": "#48c2c4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "SERIAL",
+                    "options": "${board.serialPort}"
+                },
+                {
+                    "type": "input_value",
+                    "name": "VAR"
+                }
+            ],
+            "toolbox": {
+                "show": true
+            },
+            "b4a": {
+                "code": "${SERIAL}.println(${VAR});"
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        }
+    ]
+}
