@@ -1,7 +1,7 @@
 {
     "category": "PS2手柄",
-    "name": "PS2X_lib",
-    "icon": "fa-light fa-gamepad",
+    "name": "PS2X_library",
+    "icon": "far fa-gamepad-alt",
     "introduction": "PS2手柄的驱动库",
     "colour": "#FF0000",
     "version": "0.0.1",
@@ -17,7 +17,7 @@
     "blocks": [
         {
             "inputsInline": true,
-            "type": "PS2X_begin",
+            "type": "PS2_init",
             "colour": "#ffca28",
             "message0": "初始化PS2手柄 DAT%1 CMD%2 SEL%3 CLK%4 振动反馈%5",                      
             "args0": [            
@@ -57,6 +57,92 @@
             },
             "previousStatement": null,
             "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "PS2_Refresh_data",
+            "colour": "#ffca28",
+            "message0": "PS2手柄刷新数据",                      
+            "args0": [            
+            ],                                  
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {   
+              "code":"ps2x.read_gamepad(false, 0);\ndelay(30);"                                                                                                                                                      
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "PS2_button_state",
+            "colour": "#ffca28",
+            "message0": "PS2按键%1状态%2",                      
+            "args0": [ 
+              {
+                "type":"field_dropdown",
+                "name":"PS2_Button_name",
+                "options":[
+                    ["三角形键","GREEN"],
+                    ["圆形键","RED"],
+                    ["X键","BLUE"],
+                    ["方形键","PINK"],
+                    ["左侧1","L1"],
+                    ["左侧2","L2"],
+                    ["右侧1","R1"],
+                    ["右侧2","R2"],
+                    ["方向键上","PAD_UP"],
+                    ["方向键右","PAD_RIGHT"],
+                    ["方向键下","PAD_DOWN"],
+                    ["方向键左","PAD_LEFT"],
+                    ["选择键","SELECT"],
+                    ["开始键","START"]
+                  ]
+             },
+             {
+                 "type": "field_dropdown",
+                 "name": "PS2_state_Button",
+                 "options":[
+                    ["按住","Button"],
+                    ["按下","ButtonPressed"],
+                    ["松开","ButtonReleased"],
+                    ["改变","NewButtonState"]
+                  ]
+             }           
+            ],                                  
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {   
+              "code":"ps2x.${PS2_state_Button}(${PS2_Button_name});"                                                                                                                                                      
+            },
+            "output":"Any"
+          },
+          {
+            "inputsInline": true,
+            "type": "PS2_analog_data",
+            "colour": "#ffca28",
+            "message0": "PS2摇杆%1",                      
+            "args0": [ 
+              {
+                "type":"field_dropdown",
+                "name":"PS2_Button_name",
+                "options":[
+                    ["右侧X值","PSS_RX"],
+                    ["右侧Y值","PSS_RY"],
+                    ["左侧X值","PSS_LX"],
+                    ["左侧Y值","PSS_LY"]                  
+                  ]
+             }           
+            ],                                  
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {   
+              "code":"ps2x.Analog(${PS2_analog_data});"                                                                                                                                                      
+            },
+            "output":"Any"
           }
     ]
 }

@@ -1,0 +1,214 @@
+{
+    "category": "音乐播放",
+    "name": "Music_play",
+    "icon": "far fa-music",
+    "introduction": "音乐播放的驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "GD5800_begin",
+            "colour": "#ffca28",
+            "message0": "初始化MP3模块GD5800 名为%1 TX%2  RX%3",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"GD5800_PIN_TX",
+                    "options":"${board.digitalPins}",
+                    "value": 2
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"GD5800_PIN_RX",
+                    "options":"${board.digitalPins}",
+                    "value": 3
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <GD5800_Serial.h>",
+              "object":"GD5800_Serial ${GD5800_name}(${GD5800_PIN_TX}, ${GD5800_PIN_RX});",    
+              "setup":"${GD5800_name}.begin(9600);"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "GD5800_play_mode",
+            "colour": "#ffca28",
+            "message0": "GD5800 %1 设置为%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "GD5800_mode",
+                    "options":[["播放","play"],["暂停","pause"],["下一曲","next"],["上一曲","prev"],["音量加","volumeUp"],["音量减","volumeDn"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${GD5800_name}.${GD5800_mode}();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "GD5800_play_music_number",
+            "colour": "#ffca28",
+            "message0": "GD5800 %1 播放第%2首",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "input_value",
+                    "name": "GD5800_music_number"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "GD5800_music_number": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 2
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${GD5800_name}.playFileByIndexNumber(${GD5800_music_number});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "GD5800_set_loop_mode",
+            "colour": "#ffca28",
+            "message0": "GD5800 %1 循环模式 设置为%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "GD5800_loop_mode",
+                    "options":[["全部循环","ALL"],["文件夹内循环","FOLDER"],["单曲循环","ONE"],["随机播放","RAM"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${GD5800_name}.setLoopMode(MP3_LOOP_${GD5800_loop_mode});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "GD5800_set_Equalizer",
+            "colour": "#ffca28",
+            "message0": "GD5800 %1 音效 设置为%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "GD5800_equalizer_mode",
+                    "options":[["普通","NORMAL"],["流行","POP"],["摇滚","ROCK"],["爵士","JAZZ"],["古典","CLASSIC"],["低音","BASS"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${GD5800_name}.setEqualizer(MP3_EQ_${GD5800_equalizer_mode});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "GD5800_set_Volume",
+            "colour": "#ffca28",
+            "message0": "GD5800 %1 音量 设置为%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"GD5800_name",
+                    "variable":"musicmp3",
+                    "variableTypes":["musicmp31"],
+                    "defaultType":"musicmp31"
+                },
+                {
+                    "type": "input_value",
+                    "name": "GD5800_volume"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "GD5800_volume": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 20
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${GD5800_name}.setVolume(${GD5800_volume});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          }
+    ]
+}

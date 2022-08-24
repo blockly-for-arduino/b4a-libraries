@@ -1,0 +1,61 @@
+{
+    "category": "称重传感器",
+    "name": "hx711_sensor",
+    "icon": "far fa-dumbbell",
+    "introduction": "称重传感器HX711的驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "HX711_read_data",
+            "colour": "#ffca28",
+            "message0": "读取HX711称重传感器重量(g) Dout%1 SCK%2 比例系数%3",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"HX711_PIN_Dout",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"HX711_PIN_SCK",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type":"input_value",
+                    "name":"IO_SER_OUT"
+                }                        
+            ],                                  
+            "toolbox": {
+              "show": true,
+              "inputs": {
+                "IO_SER_OUT": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 365
+                        }
+                    }
+                }
+            }              
+            },
+            "b4a": {
+              "libaray":"#include <Hx711.h>",
+              "object": "Hx711 scale1_10(1,10);",
+              "setup":"scale1_10.setOffset(scale1_10.getAverageValue(30));\nscale1_10.setScale(365);",  
+              "code":"scale1_10.getWeight(10);"                                                                                                                                                      
+            },
+            "output":"Any"
+        }            
+    ]
+}

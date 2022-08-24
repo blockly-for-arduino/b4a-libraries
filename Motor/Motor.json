@@ -1,0 +1,95 @@
+{
+    "category": "电机",
+    "name": "Motor",
+    "icon": "iconfont icon-motor",
+    "introduction": "电机的驱动库，包括L293,L298,DB6612FNG和DRV8833",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": false,
+            "type": "Motor_2dir",
+            "colour": "#ffca28",
+            "message0": "L293/298/BT6612FNG 方向管脚1%1 方向管脚2%2 EN管脚%3 速度(-255-255)%4",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"PIN_Dir_1",
+                    "options":"${board.digitalPins}",
+                    "value": 2
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"PIN_Dir_2",
+                    "options":"${board.digitalPins}",
+                    "value": 4
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"PIN_EN",
+                    "options":[["3","3"],["5","5"],["6","6"],["9","9"],["10","10"],["11","11"]],
+                    "value": 0
+                },
+                {
+                    "type": "field_input",
+                    "name": "speed_value",
+                    "text": 100
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "function":"void setMotor(int dirpin1, int dirpin2, int speedpin, int speed) {\n   digitalWrite(dirpin2,!digitalRead(dirpin1));\n   if (speed == 0) {\n     digitalWrite(dirpin1, LOW);\n    analogWrite(speedpin, 0);\n  } else if (speed > 0) {\n   digitalWrite(dirpin1, LOW);\n       analogWrite(speedpin, speed);\n   } else {\n     digitalWrite(dirpin1, HIGH);\n    analogWrite(speedpin, -speed);\n  }\n}",    
+              "setup":"  pinMode(${PIN_Dir_1}, OUTPUT);\npinMode(${PIN_Dir_2}, OUTPUT);\ndigitalWrite(${PIN_Dir_1}, LOW);\ndigitalWrite(${PIN_Dir_2}, LOW);",       
+              "code": "setMotor(${PIN_Dir_1}, ${PIN_Dir_2}, ${PIN_EN}, ${speed_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "Motor_8833",
+            "colour": "#ffca28",
+            "message0": "L293/298/DRV8833 速度管脚%1 方向管脚%2 速度(-255-255)%3",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"PIN_speed",
+                    "options":[["3","3"],["5","5"],["6","6"],["9","9"],["10","10"],["11","11"]],
+                    "value": 5
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"PIN_Dir",
+                    "options":"${board.digitalPins}",
+                    "value": 4
+                },
+                {
+                    "type": "field_input",
+                    "name": "8833_speed_value",
+                    "text": 100
+                }
+            ],                                 
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {
+              "function":"void setMotor8833(int speedpin, int dirpin, int speed) {\n  if (speed == 0) {\n     digitalWrite(dirpin, LOW);\n     analogWrite(speedpin, 0);\n   } else if (speed > 0) {\n     digitalWrite(dirpin, LOW);\n     analogWrite(speedpin, speed);\n  } else {\n     digitalWrite(dirpin, HIGH);\n     analogWrite(speedpin, 255 + speed);\n  }\n}",
+              "setup":"  pinMode(${PIN_speed}, OUTPUT);\n  pinMode(${PIN_Dir}, OUTPUT);\n  digitalWrite(${PIN_speed}, LOW);\n  digitalWrite(${PIN_Dir}, LOW);",
+              "code":  "setMotor8833(${PIN_speed}, ${PIN_Dir}, ${8833_speed_value});"                
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          }
+    ]
+}

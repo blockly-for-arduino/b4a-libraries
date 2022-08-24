@@ -1,0 +1,69 @@
+{
+    "category": "BMP280",
+    "name": "bmp/bme280",
+    "icon": "far fa-clouds",
+    "introduction": "BMP280/BME280气压传感器的驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "BMP280_gain_data",
+            "colour": "#ffca28",
+            "message0": "读取%1设备地址0X%2获取%3",                      
+            "args0": [            
+            {
+                "type":"field_dropdown",
+                "name":"Sensor_type",
+                "options":[
+                  ["BMP280","Adafruit_BMP280 bmp;"],
+                  ["BME280","Adafruit_BME280 bme;"]
+                ]
+            },
+            {
+                "type":"input_value",
+                "name":"Sensor_address"
+            },
+            {
+                "type": "field_dropdown",
+                "name": "vibration_on-off",
+                "options":[
+                  ["温度","readTemperature()"],
+                  ["湿度","readHumidity()"],
+                  ["气压","readPressure()"],
+                  ["高度","readAltitude(SEALEVELPRESSURE_HPA)"]
+                ]
+            }
+            ],                                  
+            "toolbox": {
+              "show": true,
+              "inputs": {
+                "Sensor_address": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                        "NUM": 77
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {   
+              "library": "#include <Wire.h>\n#include <SPI.h>\n#include <Adafruit_Sensor.h>\n#include <Adafruit_BME280.h>\n#define SEALEVELPRESSURE_HPA (1013.25)",
+              "object": "${Sensor_type}",
+              "setup":"unsigned status;\n status = bme.begin(0x${Sensor_address});",
+              "code":"bme.readAltitude${vibration_on-off};"                                                                                                                                                      
+            },
+            "output":"Any"
+          }                   
+    ]
+}

@@ -1,0 +1,232 @@
+{
+    "category": "RFID",
+    "name": "RFID",
+    "icon": "far fa-address-card",
+    "introduction": "RFID驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": false,
+            "type": "RFID_begin",
+            "colour": "#ffca28",
+            "message0": "初始化RFID%1 SDA%2 SCK%3 MOSI%4 MISO%5 RST%6",                      
+            "args0": [
+                {
+                    "type": "field_variable",
+                    "name": "RFID_name",
+                    "variable": "rfid",
+                    "variableTypes":["rfid1"],
+                    "defaultType":"rfid1"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"RFID_pin_sda",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"RFID_pin_sck",
+                    "options":[["13",""]]
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_pin_mosi"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_pin_miso"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_pin_rst"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <SPI.h>\n#include <MFRC522.h>",
+              "object":"MFRC522 rfid(${RFID_pin_sda}, ${RFID_pin_rst});",
+              "setup":"  SPI.begin();\n  rfid.PCD_Init();"                                                                                                                                             
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "RFID_newcard",
+            "colour": "#ffca28",
+            "message0": "RFID%1 检测到卡",                      
+            "args0": [
+                {
+                    "type": "field_variable",
+                    "name": "RFID_name",
+                    "variable": "rfid",
+                    "variableTypes":["rfid1"],
+                    "defaultType":"rfid1"
+                }
+            ],
+            "message1": "%1",                      
+            "args1": [
+                {
+                    "type": "input_statement",
+                    "name":"RFID_newcard_function"
+                }
+            ],                                 
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "function":"boolean MFRC522_IsNewCard(MFRC522 *_name){\n    if(!_name->PICC_IsNewCardPresent())\n      return false;\n    if(!_name->PICC_ReadCardSerial())\n      return false;\n    return true;\n  }",
+              "code":"if(MFRC522_IsNewCard(&${RFID_name})){\n    ${RFID_newcard_function}\n${RFID_name}.PICC_HaltA();\n    ${RFID_name}.PCD_StopCrypto1();\n  }"                                                                   
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "RFID_readcard_id",
+            "colour": "#ffca28",
+            "message0": "RFID%1读取卡号",                      
+            "args0": [
+                {
+                    "type": "field_variable",
+                    "name": "RFID_name",
+                    "variable": "rfid",
+                    "variableTypes":["rfid1"],
+                    "defaultType":"rfid1"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "function":"String MFRC522_ReadCardUID(MFRC522 *_name){\n    String _CardUID = \"\";\n    for (byte _i = 0; _i < _name->uid.size; _i++){\n      if(_name->uid.uidByte[_i] < 0x10)\n        _CardUID += \"0\";\n      _CardUID += String(_name->uid.uidByte[_i], HEX);\n    }\n    return _CardUID;\n  }",
+              "code":"MFRC522_ReadCardUID(&${RFID_name});"                                                                                                                                                  
+            },
+            "output":"Any"
+        },
+        {
+            "inputsInline": true,
+            "type": "RFID_writecard",
+            "colour": "#ffca28",
+            "message0": "RFID%1 写卡 数据块%2 字节组%3 长度%4",                      
+            "args0": [
+                {
+                    "type": "field_variable",
+                    "name": "RFID_name",
+                    "variable": "rfid",
+                    "variableTypes":["rfid1"],
+                    "defaultType":"rfid1"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_data_block"
+                },
+                {
+                    "type": "field_input",
+                    "name":"RFID_array",
+                    "text":"mylist"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_data_length"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "RFID_data_block": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },  
+                "RFID_data_length": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 16
+                        }
+                    }
+                }                           
+            }
+            },
+            "b4a": {
+              "object":"boolean MFRC522_WriteCard(MFRC522 *_name, byte _block, byte *_buffer, byte _length){\n  MFRC522::MIFARE_Key _key;\n  for(byte i = 0; i < 6; i++)\n    _key.keyByte[i] = 0xFF;\n  MFRC522::StatusCode _status;\n  _status = _name->PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, _block, &_key, &(_name->uid));\n  if(_status != MFRC522::STATUS_OK){\n    Serial.print(F(\"PCD_Authenticate() failed: \"));\n    Serial.println(_name->GetStatusCodeName(_status));\n    return false;\n  }\n  else{\n    Serial.println(F(\"PCD_Authenticate() success;\"));\n  }\n  _status = _name->MIFARE_Write(_block, _buffer, _length);\n  if(_status != MFRC522::STATUS_OK){\n    Serial.print(F(\"MIFARE_Write() failed: \"));\n    Serial.println(_name->GetStatusCodeName(_status));\n    return false;\n  }\n  else{\n    Serial.println(F(\"MIFARE_Write() success;\"));\n  }\n  return true;\n}",
+              "setup":"Serial.begin(9600);",
+              "code":"MFRC522_WriteCard(&${RFID_name}, ${RFID_data_block}, ${RFID_array}, ${RFID_data_length});"                                                                   
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "RFID_readcard",
+            "colour": "#ffca28",
+            "message0": "RFID%1 读卡 数据块%2 保存到 字节组%3 长度%4",                      
+            "args0": [
+                {
+                    "type": "field_variable",
+                    "name": "RFID_name",
+                    "variable": "rfid",
+                    "variableTypes":["rfid1"],
+                    "defaultType":"rfid1"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_readdata_block"
+                },
+                {
+                    "type": "field_input",
+                    "name":"RFID_readarray",
+                    "text":"mylist"
+                },
+                {
+                    "type": "input_value",
+                    "name":"RFID_readdata_length"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "RFID_readdata_block": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },  
+                "RFID_readdata_length": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 16
+                        }
+                    }
+                }                           
+            }
+            },
+            "b4a": {
+              "object":"boolean MFRC522_ReadCard(MFRC522 *_name, byte _block, byte *_buffer, byte _length){\n  MFRC522::MIFARE_Key _key;\n  for(byte i = 0; i < 6; i++)\n    _key.keyByte[i] = 0xFF;\n  MFRC522::StatusCode _status;\n  _status = _name->PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, _block, &_key, &(_name->uid));\n  if(_status != MFRC522::STATUS_OK){\n    Serial.print(F(\"PCD_Authenticate() failed: \"));\n    Serial.println(_name->GetStatusCodeName(_status));\n    return false;\n  }\n  else{\n    Serial.println(F(\"PCD_Authenticate() success;\"));\n  }\n  if(_length < 18){\n    byte _Read_buffer[18];\n    byte _Read_buffer_length = 18;\n    _status = _name->MIFARE_Read(_block, _Read_buffer, &_Read_buffer_length);\n    if(_status != MFRC522::STATUS_OK){\n      Serial.print(F(\"MIFARE_Read() failed: \"));\n      Serial.println(_name->GetStatusCodeName(_status));\n      return false;\n    }\n    else{\n      Serial.println(F(\"MIFARE_Read() success;\"));\n    }\n    for(byte _i = 0; _i < _length; _i++)\n      _buffer[_i] = _Read_buffer[_i];\n  }\n  else{\n    _status = _name->MIFARE_Read(_block, _buffer, &_length);\n    if(_status != MFRC522::STATUS_OK){\n      Serial.print(F(\"MIFARE_Read() failed: \"));\n      Serial.println(_name->GetStatusCodeName(_status));\n      return false;\n    }\n    else{\n      Serial.println(F(\"MIFARE_Read() success;\"));\n    }\n  }\n  return true;\n}",
+              "setup":"Serial.begin(9600);",
+              "code":"MFRC522_ReadCard(&${RFID_name}, ${RFID_readdata_block}, ${RFID_readarray}, ${RFID_readdata_length});"                                                                   
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        }
+    ]
+}

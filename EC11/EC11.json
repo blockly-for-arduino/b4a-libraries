@@ -1,0 +1,94 @@
+{
+    "category": "旋转编码器",
+    "name": "EC11_Sensor",
+    "icon": "fal fa-bullseye-pointer",
+    "introduction": "EC11旋转编码器的驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "EC11_begin",
+            "colour": "#ffca28",
+            "message0": "旋转编码器初始化 A%1 B%2 KEY%3",                      
+            "args0": [
+            {
+               "type": "field_dropdown",
+               "name":"EC11_PIN_A",
+               "options":"${board.digitalPins}",
+               "value": 2
+            },
+            {
+               "type": "field_dropdown",
+               "name":"EC11_PIN_B",
+               "options":"${board.digitalPins}",
+               "value": 3
+            },
+            {
+               "type": "field_dropdown",
+               "name":"EC11_PIN_KEY",
+               "options":"${board.digitalPins}",
+               "value": 4
+            }
+            ],                                  
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {            
+              "object": "#define ENCODER_A_PIN ${EC11_PIN_A}\n#define ENCODER_B_PIN ${EC11_PIN_B}\n#define SWITCH_PIN    ${EC11_PIN_KEY}\nlong EC11_position;",
+              "setup": "  pinMode(ENCODER_A_PIN, INPUT);\n  pinMode(ENCODER_B_PIN, INPUT);\n  pinMode(SWITCH_PIN, INPUT);\n\n  attachInterrupt(0, read_quadrature, CHANGE);",  
+              "function": "void read_quadrature(){\n  if (digitalRead(ENCODER_A_PIN) == LOW){\n    if (digitalRead(ENCODER_B_PIN) == LOW)\n      EC11_position++;\n }\n else{\n    if (digitalRead(ENCODER_B_PIN) == LOW)\n      EC11_position--;\n  }\n}"                                                                                                                                                    
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "EC11_position_data",
+            "colour": "#ffca28",
+            "message0": "获取旋转编码器位置值",                      
+            "args0": [
+            ],                                 
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {
+              "code":  "EC11_position"                
+            },
+            "output":"Any"
+          },
+          {
+            "inputsInline": true,
+            "type": "EC11_SWITCH_pressdown",
+            "colour": "#ffca28",
+            "message0": "按键被按下",                      
+            "args0": [
+            ],   
+            "message1": "%1",                      
+            "args1": [
+            {
+                "type": "input_statement",
+                "name": "EC11_INNER"
+            }
+                
+            ],                                
+            "toolbox": {
+              "show": true
+            },
+            "b4a": {            
+              "code":  "   if (digitalRead(SWITCH_PIN) == LOW){\n  delay(10);\n  if (digitalRead(SWITCH_PIN) == LOW){\n${EC11_INNER}\n  }\n}"                                                                                                                                                            
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          }       
+    ]
+}

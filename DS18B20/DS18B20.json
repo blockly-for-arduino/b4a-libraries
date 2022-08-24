@@ -1,0 +1,48 @@
+{
+    "category": "DS18B20",
+    "name": "DS18B20",
+    "icon": "far fa-temperature-hot",
+    "introduction": "DS18B20温度传感器驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": false,
+            "type": "DS18B20_gettemp",
+            "colour": "#ffca28",
+            "message0": "获取DS18B20温度%1 管脚%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"DS18B20_tempmode",
+                    "options":[["摄氏度","0"],["华氏度","1"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"DS18B20_pin",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <OneWire.h>\n  #include <DallasTemperature.h>",
+              "object":"OneWire oneWire_${DS18B20_pin}(${DS18B20_pin});\n  DallasTemperature sensors_${DS18B20_pin}(&oneWire_${DS18B20_pin});\n  DeviceAddress insideThermometer;",
+              "function":"float ds18b20_${DS18B20_pin}_getTemp(int w) {\n  sensors_${DS18B20_pin}.requestTemperatures();\n  if(w==0) {\n    return sensors_${DS18B20_pin}.getTempC(insideThermometer);\n  }\n  else {\n    return sensors_${DS18B20_pin}.getTempF(insideThermometer);\n  }\n}",
+              "setup":"  sensors_${DS18B20_pin}.getAddress(insideThermometer, 0);\n  sensors_${DS18B20_pin}.setResolution(insideThermometer, 9);",
+              "code":"ds18b20_${DS18B20_pin}_getTemp(${DS18B20_tempmode});"
+            },
+            "output": "Any"
+        }
+    ]
+}

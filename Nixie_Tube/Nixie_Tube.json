@@ -1,0 +1,324 @@
+{
+    "category": "数码管",
+    "name": "Nixie_Tube",
+    "icon": "far fa-ad",
+    "introduction": "4位数码管的显示驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "TM1650_begin",
+            "colour": "#ffca28",
+            "message0": "初始化TM1650 名为%1",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1650_name",
+                    "variable":"tm1650",
+                    "variableTypes":["tm16501"],
+                    "defaultType":"tm16501"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <Wire.h>\n#include <TM1650.h>",
+              "object":"TM1650 ${TM1650_name};",    
+              "setup":"Wire.begin();\n${TM1650_name}.init();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1650_mode",
+            "colour": "#ffca28",
+            "message0": "四位数码管 %1 屏幕%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1650_name",
+                    "variable":"tm1650",
+                    "variableTypes":["tm16501"],
+                    "defaultType":"tm16501"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TM1650_mode",
+                    "options":[["开","displayOn"],["关","displayOff"],["清屏","clear"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${TM1650_name}.${TM1650_mode}();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1650_display_String",
+            "colour": "#ffca28",
+            "message0": "四位数码管 %1 显示字符串%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1650_name",
+                    "variable":"tm1650",
+                    "variableTypes":["tm16501"],
+                    "defaultType":"tm16501"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TM1650_string_name"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TM1650_string_name": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 234
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${TM1650_name}.displayString(\"${TM1650_string_name}\");"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1650_dot_ctrl",
+            "colour": "#ffca28",
+            "message0": "四位数码管 %1 第%2个小数点%3",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1650_name",
+                    "variable":"tm1650",
+                    "variableTypes":["tm16501"],
+                    "defaultType":"tm16501"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TM1650_dot_number",
+                    "options":[["1","0"],["2","1"],["3","2"],["4","3"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TM1650_dot_mode",
+                    "options":[["亮","true"],["灭","false"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${TM1650_name}.setDot(${TM1650_dot_number},${TM1650_dot_mode});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1637_begin",
+            "colour": "#ffca28",
+            "message0": "初始化TM1637 名为%1 CLK%2 DIO%3",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1637_name",
+                    "variable":"tm1637",
+                    "variableTypes":["tm16371"],
+                    "defaultType":"tm16371"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"TM1637_PIN_CLK",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"TM1637_PIN_DIO",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "library":"#include <SevenSegmentTM1637.h>",
+              "object":"SevenSegmentTM1637  ${TM1637_name}(${TM1637_PIN_CLK},${TM1637_PIN_DIO});",
+              "setup":"${TM1637_name}.begin();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1637_set_back_light",
+            "colour": "#ffca28",
+            "message0": "四位数码管TM1637 %1  设置亮度%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1637_name",
+                    "variable":"tm1637",
+                    "variableTypes":["tm16371"],
+                    "defaultType":"tm16371"
+                },
+                {
+                  "type": "field_input",
+                  "name":"TM1637_light_value",
+                  "text": 20
+                } 
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${TM1637_name}.setBacklight(${TM1637_light_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1637_display_mode",
+            "colour": "#ffca28",
+            "message0": "四位数码管TM1637 %1  %2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1637_name",
+                    "variable":"tm1637",
+                    "variableTypes":["tm16371"],
+                    "defaultType":"tm16371"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TM1637_diaplay_mode_name",
+                    "options":[["清屏","clear"],["闪烁","blink"],["开","on"],["关","off"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"${TM1637_name}.${TM1637_light_value}();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1637_display_string",
+            "colour": "#ffca28",
+            "message0": "四位数码管TM1637 %1  显示“%2”",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1637_name",
+                    "variable":"tm1637",
+                    "variableTypes":["tm16371"],
+                    "defaultType":"tm16371"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TM1637_string_name"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TM1637_string_name": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 234
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${TM1637_name}.${TM1637_light_value}();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          },
+          {
+            "inputsInline": true,
+            "type": "TM1637_display_clock",
+            "colour": "#ffca28",
+            "message0": "四位数码管TM1637 %1  显示时间%2时%3分 时钟点设置为%4",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TM1637_name",
+                    "variable":"tm1637",
+                    "variableTypes":["tm16371"],
+                    "defaultType":"tm16371"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TM1637_clock_H"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TM1637_clock_m"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TM1637_clock_dot_mode",
+                    "options":[["开","true"],["关","false"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TM1637_clock_H": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 12
+                        }
+                    }
+                },
+                "TM1637_clock_m": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 20
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${TM1637_name}.printTime(${TM1637_clock_H},${TM1637_clock_m},${TM1637_clock_dot_mode});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+          }
+    ]
+}

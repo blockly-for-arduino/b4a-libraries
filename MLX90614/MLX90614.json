@@ -1,0 +1,56 @@
+{
+    "category": "MLX90614",
+    "name": "MLX90614",
+    "icon": "far fa-temperature-hot",
+    "introduction": "MLX90614红外温度传感器驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": false,
+            "type": "MLX90614_gettemp",
+            "colour": "#ffca28",
+            "message0": "MLX90614 设备地址%1 获取%2",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name":"MLX90614_address"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MLX90614_state",
+                    "options":[["目标物体温度(℃)","ObjectTempC"],["目标物体温度(℉)","ObjectTempF"],["周围环境温度(℃)","AmbientTempC"],["周围环境温度(℉)","AmbientTempF"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MLX90614_address": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {
+              "library":"#include <Wire.h>\n#include <Adafruit_MLX90614.h>",
+              "object":"Adafruit_MLX90614 MLX = Adafruit_MLX90614(${MLX90614_address});",
+              "setup":"MLX.begin();",
+              "code":"MLX.read${MLX90614_state}();"
+            },
+            "output": "Any"
+        }
+    ]
+}

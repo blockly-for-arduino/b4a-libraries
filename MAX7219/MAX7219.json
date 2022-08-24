@@ -1,0 +1,443 @@
+{
+    "category": "MAX7219点阵屏",
+    "name": "MAX7219",
+    "icon": "far fa-tv",
+    "introduction": "MAX7219的点阵屏驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": false,
+            "type": "MAX7219_begin",
+            "colour": "#ffca28",
+            "message0": "初始化MAX7219点阵屏DIN(MOSI)%1 CS%2 CLK(SCK)%3 水平点阵屏数%4 竖直点阵屏数%5",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "MAX7219_pin_mosi",
+                    "options":[["11",""]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX7219_pin_cs",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX7219_pin_sck",
+                    "options":[["13",""]]
+                },
+                {
+                    "type": "input_value",
+                    "name":"MAX7219_amount_x"
+                },
+                {
+                    "type": "input_value",
+                    "name":"MAX7219_amount_y"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX7219_amount_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "MAX7219_amount_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {
+              "library":"#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Max72xxPanel.h>",
+              "object":"Max72xxPanel myMatrix = Max72xxPanel(${MAX7219_pin_cs},${MAX7219_amount_x},${MAX7219_amount_y});"                                                                                                                                              
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "HK16K33_begin",
+            "colour": "#ffca28",
+            "message0": "HT16K33点阵屏初始化 SCL%1 SDA%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"HT16K33_PIN_SCL",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"HT16K33_PIN_SDA",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <Matrix.h>",
+              "object":"Matrix myMatrix(${HT16K33_PIN_SDA},${HT16K33_PIN_SCL});",
+              "setup":"myMatrix.begin(0x70);",
+              "code":"myMatrix.clear();"                                                                   
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX7219_or_HT16K33_setdot",
+            "colour": "#ffca28",
+            "message0": "点阵类型%1 X轴%2 Y轴%3 设置为%4",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "MAX7219_or_HT16K33_setdot_TYPE",
+                    "options":[["MAX7219",""],["HT16K33","7-"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX7219_or_HT16K33_setdot_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX7219_or_HT16K33_setdot_y"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX7219_or_HT16K33_setdot_mode",
+                    "options":[["高","HIGH"],["低","LOW"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX7219_or_HT16K33_setdot_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "MAX7219_or_HT16K33_setdot_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {   
+              "setup":"myMatrix.drawPixel(${MAX7219_or_HT16K33_setdot_x},${MAX7219_or_HT16K33_setdot_TYPE}${MAX7219_or_HT16K33_setdot_y},${MAX7219_or_HT16K33_setdot_mode});\n  myMatrix.write();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX7219_rotate",
+            "colour": "#ffca28",
+            "message0": "MAX7219 屏幕序号%1 旋转%2",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name":"MAX7219_rotate_screen_number"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX7219_rotate_angle",
+                    "options":[["0度","0"],["90度","1"],["180度","2"],["270度","3"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX7219_rotate_screen_number": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                }                             
+            }
+            },
+            "b4a": {
+              "code":"myMatrix.setRotation(${MAX7219_rotate_screen_number},${MAX7219_rotate_angle});"                                                                   
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },       
+        {
+            "inputsInline": true,
+            "type": "MAX7219_Position",
+            "colour": "#ffca28",
+            "message0": "MAX7219 屏幕序号%1 X%2 Y%3",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "MAX7219_Position_number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX7219_Position_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX7219_Position_y"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX7219_Position_number": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "MAX7219_Position_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "MAX7219_Position_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"myMatrix.setPosition(${MAX7219_Position_number},${MAX7219_Position_x},${MAX7219_Position_y});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "HT16K33_rotate",
+            "colour": "#ffca28",
+            "message0": "HT16K33  旋转%1",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"HT16K33_rotate_angle",
+                    "options":[["0度","0"],["90度","1"],["180度","2"],["270度","3"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"myMatrix.setRotation(4-${HT16K33_rotate_angle});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX_or_HT_print_text",
+            "colour": "#ffca28",
+            "message0": "%1 显示文本%2 速度%3",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "MAX_or_HT_print_text_mode",
+                    "options":[["MAX7219","1"],["HT16K33","2"]]
+                },
+                {
+                    "type": "field_input",
+                    "name":"MAX_or_HT_print_text_value",
+                    "text": "openjumper"
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX_or_HT_print_text_V"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX_or_HT_print_text_V": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 300
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${MAX_or_HT_print_text_mode}myMatrix.scrollMessage(\"${MAX_or_HT_print_text_value}\",${MAX_or_HT_print_text_V});"
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX_or_HT_print_text2",
+            "colour": "#ffca28",
+            "message0": "%1 显示文本%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "MAX_or_HT_print_text2_mode",
+                    "options":[["MAX7219",""],["HT16K33",""]]
+                },
+                {
+                    "type": "field_input",
+                    "name":"MAX_or_HT_print_text2_value",
+                    "text": "openjumper"
+                }
+            ],                                
+            "toolbox": {
+            "show": true           
+            },
+            "b4a": {  
+              "code":"  myMatrix.setCursor(0, 0);\n  myMatrix.print(\"${MAX_or_HT_print_text2_value}\");\n  myMatrix.write();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": false,
+            "type": "MAX_or_HT_print_image",
+            "colour": "#ffca28",
+            "message0": "%1 屏幕序号%2 图案数组%3",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "MAX_or_HT_print_image_mode",
+                    "options":[["MAX7219","7-"],["HT16K33",""]]
+                },
+                {
+                    "type": "input_value",
+                    "name":"MAX_or_HT_print_image_number"
+                },
+                {
+                    "type": "input_value",
+                    "name":"MAX_or_HT_print_image_array"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX_or_HT_print_image_number": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "MAX_or_HT_print_image_array": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                }                                                           
+            }
+            },
+            "b4a": {  
+              "object":"uint8_t  LEDArray[8];",
+              "code":"memcpy_P(&LEDArray, &LedArray1, 8);\n  for(int index_i=0; index_i<8; index_i++)\n  {\n    for(int index_j=0*8; index_j<0*8+8; index_j++)\n    {\n      if((LEDArray[index_i]&0x01)>0)\n        myMatrix.drawPixel(index_j, ${MAX_or_HT_print_image_mode}index_i,1);\n      else\n        myMatrix.drawPixel(index_j, ${MAX_or_HT_print_image_mode}index_i,0);\n      LEDArray[index_i] = LEDArray[index_i]>>1;\n    }\n  }\n  myMatrix.write();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX_or_HT_ctrl_all",
+            "colour": "#ffca28",
+            "message0": "%1 设置为%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX_or_HT_ctrl_all_mode",
+                    "options":[["MAX7219",""],["HT16K33",""]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX_or_HT_ctrl_all_ctrl",
+                    "options":[["全亮","1"],["全灭","0"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"  myMatrix.fillScreen(${MAX_or_HT_ctrl_all_ctrl});\n  myMatrix.write();"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "MAX_or_HT_set_light",
+            "colour": "#ffca28",
+            "message0": "%1 亮度%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"MAX_or_HT_set_light_mode",
+                    "options":[["MAX7219","setIntensity"],["HT16K33","setBrightness"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "MAX_or_HT_set_light_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "MAX_or_HT_set_light_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 5
+                        }
+                    }
+                }                                                           
+            }
+            },
+            "b4a": {  
+              "code":"myMatrix.${MAX_or_HT_set_light_mode}(${MAX_or_HT_set_light_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        }
+    ]
+}

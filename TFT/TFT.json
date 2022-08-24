@@ -1,0 +1,955 @@
+{
+    "category": "TFT显示屏",
+    "name": "Nixie_Tube",
+    "icon": "far fa-tv",
+    "introduction": "TFT的显示驱动库",
+    "colour": "#FF0000",
+    "version": "0.0.1",
+    "author": "K2L",
+    "compatibility": {
+        "core": [
+            "arduino:avr",
+            "esp32:esp32",
+            "esp8266:esp8266"
+        ],
+        "voltage": []
+    },
+    "blocks": [
+        {
+            "inputsInline": true,
+            "type": "TFT_begin_ST7735",
+            "colour": "#ffca28",
+            "message0": "初始化TFT显示屏ST7735%1 CLK 13 SDA 11 CS%2 DC%3 RST%4",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "ST7735_TYPE",
+                    "options":[["绿色标签","INITR_GREENTAB"],["红色标签","INITR_REDTAB"],["黑色标签","INITR_BLACKTAB"],["160*80","INITR_MINI160x80"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7735_PIN_CS",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7735_PIN_DC",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7735_PIN_RST",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <Adafruit_GFX.h>\n#include <Adafruit_ST7735.h>\n#include <SPI.h>\n#include <U8g2_for_Adafruit_GFX.h>",
+              "object":"Adafruit_ST7735 tft = Adafruit_ST7735(${ST7735_PIN_CS}, ${ST7735_PIN_DC}, ${ST7735_PIN_RST});\nU8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;",    
+              "setup":"  tft.initR(${ST7735_TYPE});\n  tft.fillScreen(0x0000);\n  u8g2_for_adafruit_gfx.begin(tft);"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_begin_ST7789",
+            "colour": "#ffca28",
+            "message0": "初始化TFT显示屏ST7789%1 CLK 13 SDA 11 CS%2 DC%3 RST%4",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "ST7789_TYPE",
+                    "options":[["160*128","128, 160"],["240*135","135, 240"],["240*240","240, 240"],["320*240","240, 320"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7789_PIN_CS",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7789_PIN_DC",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7789_PIN_RST",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <Adafruit_GFX.h>\n#include <Adafruit_ST7789.h>\n#include <SPI.h>\n#include <U8g2_for_Adafruit_GFX.h>",
+              "object":"Adafruit_ST7789 tft = Adafruit_ST7789(${ST7789_PIN_CS}, ${ST7789_PIN_DC}, ${ST7789_PIN_RST});\nU8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;",    
+              "setup":"  tft.init(${ST7789_TYPE});\n  tft.fillScreen(0x0000);\n  u8g2_for_adafruit_gfx.begin(tft);"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_begin_ST7796",
+            "colour": "#ffca28",
+            "message0": "初始化TFT显示屏ST7796%1 CLK 13 SDA 11 CS%2 DC%3 RST%4",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "ST7796_TYPE",
+                    "options":[["480*320","480×320(ST7796)"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7796_PIN_CS",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7796_PIN_DC",
+                    "options":"${board.digitalPins}"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"ST7796_PIN_RST",
+                    "options":"${board.digitalPins}"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {
+              "library":"#include <Adafruit_GFX.h>\n#include <Adafruit_ST7796.h>\n#include <SPI.h>\n#include <U8g2_for_Adafruit_GFX.h>",
+              "object":"Adafruit_ST7796 tft = Adafruit_ST7796(${ST7796_PIN_CS}, ${ST7796_PIN_DC}, ${ST7796_PIN_RST});\nU8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;",    
+              "setup":"  tft.init(${ST7796_TYPE});\n  tft.fillScreen(0x0000);\n  u8g2_for_adafruit_gfx.begin(tft);"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TM1650_mode",
+            "colour": "#ffca28",
+            "message0": "R值%1 G值%2 B值%3",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "R_value"
+                },
+                {
+                    "type": "input_value",
+                    "name": "G_value"
+                },
+                {
+                    "type": "input_value",
+                    "name": "B_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "R_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "G_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "B_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"${B_value}*256+${G_value}*8+${R_value}/8"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_backdrop_colour",
+            "colour": "#ffca28",
+            "message0": "TFT背景色  设置为%1",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_backdrop_colour_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_backdrop_colour_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.fillScreen(${TFT_backdrop_colour_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_set_Rotation",
+            "colour": "#ffca28",
+            "message0": "TFT 旋转%1",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_Rotation_angle",
+                    "options":[["0度","0"],["90度","1"],["180度","2"],["270度","3"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"tft.setRotation(${TFT_Rotation_angle});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_set_typeface_en",
+            "colour": "#ffca28",
+            "message0": "TFT 设置英文字体%1 字号%2 字形%3",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"TFT_typeface_type",
+                    "options":[["Times New Roman","timR"],["Helvetica","helvR"],["ncen","ncenR"],["courier new","courR"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"TFT_word_size",
+                    "options":[["8","08"],["10","10"],["12","12"],["14","14"],["18","18"],["24","24"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"TFT_diaplay_word_mode",
+                    "options":[["常规",""],["加粗",""]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"u8g2_for_adafruit_gfx.setFont(u8g2_font_${TFT_typeface_type}${TFT_word_size}_tf);"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_set_typeface_cn",
+            "colour": "#ffca28",
+            "message0": "TFT 设置中文字体%1 字号%2",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name":"TFT_typeface_type_cn",
+                    "options":[["宋体小字体集1(411字)","chinese1"],["宋体小字体集2(574字)","chinese2"],["宋体小字体集3(993字)","chinese3"],["宋体大字体集A(4041字)","gb2312a"],["宋体大字体集B(4531字)","gb2312b"],["宋体全集(7539字)","gb2312"]]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name":"TFT_word_size_cn",
+                    "options":[["12","12"],["13","13"],["14","14"],["15","15"],["16","16"]]
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "code":"u8g2_for_adafruit_gfx.setFont(u8g2_font_wqy${TFT_word_size_cn}_t_${TFT_typeface_type_cn});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_display_string",
+            "colour": "#ffca28",
+            "message0": "TFT 显示文本 起点x%1 起点y%2 颜色%3 内容“%4”",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_Coordinate_value_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_Coordinate_value_y"
+                },
+                {
+                    "type":"input_value",
+                    "name":"TFT_colour_value"
+                },
+                {
+                  "type": "field_input",
+                  "name":"TFT_display_string_value",
+                  "text": 1234
+                } 
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_Coordinate_value_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "TFT_Coordinate_value_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 20
+                        }
+                    }
+                },
+                "TFT_colour_value": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 45
+                        }
+                    }
+                }                                                            
+            }
+            },
+            "b4a": {  
+              "code":"  u8g2_for_adafruit_gfx.setCursor(${TFT_Coordinate_value_x},${TFT_Coordinate_value_y});\n  u8g2_for_adafruit_gfx.setForegroundColor((${TFT_colour_value}));\n  u8g2_for_adafruit_gfx.print(\"${TFT_display_string_value}\");"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_image_data",
+            "colour": "#ffca28",
+            "message0": "TFT 图像名称%1 图像数据%2",                      
+            "args0": [
+                {
+                    "type":"field_variable",
+                    "name":"TFT_image_name",
+                    "variable":"imagebit",
+                    "variableTypes":["imagebit1"],
+                    "defaultType":"imagebit1"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_image_data_bit"
+                }
+            ],                                
+            "toolbox": {
+            "show": true
+            },
+            "b4a": {  
+              "object":"const uint16_t ${TFT_image_name}[] PROGMEM = {\n${TFT_image_data_bit}\n};"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_diaplay_image",
+            "colour": "#ffca28",
+            "message0": "TFT显示图像 x坐标%1 y坐标%2 宽度%3 高度%4 图像名称%5",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_image_Coordinate_value_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_image_Coordinate_value_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_image_width"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_image_height"
+                },
+                {
+                    "type":"field_variable",
+                    "name":"TFT_image_name",
+                    "variable":"imagebit",
+                    "variableTypes":["imagebit1"],
+                    "defaultType":"imagebit1"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_image_Coordinate_value_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "TFT_image_Coordinate_value_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "TFT_image_width": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                },
+                "TFT_image_height": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 0
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.drawRGBBitmap(${TFT_image_Coordinate_value_x}, ${TFT_image_Coordinate_value_y}, ${TFT_image_name}, ${TFT_image_width}, ${TFT_image_height});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_dot",
+            "colour": "#ffca28",
+            "message0": "TFT画点 x坐标%1 y坐标%2 颜色%3",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_dot_Coordinate_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_dot_Coordinate_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_dot_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_dot_Coordinate_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 64
+                        }
+                    }
+                },
+                "TFT_draw_dot_Coordinate_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 32
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.drawPixel(${TFT_draw_dot_Coordinate_x},${TFT_draw_dot_Coordinate_y},${TFT_draw_dot_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_line",
+            "colour": "#ffca28",
+            "message0": "TFT画线 起点x%1 起点y%2 终点x%3 终点y%4 颜色%5",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_line_start_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_line_start_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_line_end_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_line_end_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_line_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_line_start_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 64
+                        }
+                    }
+                },
+                "TFT_draw_line_start_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 32
+                        }
+                    }
+                },
+                "TFT_draw_line_end_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 32
+                        }
+                    }
+                },
+                "TFT_draw_line_end_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 32
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.drawLine(${TFT_draw_line_start_x},${TFT_draw_line_start_y},${TFT_draw_line_end_x},${TFT_draw_line_end_y},${TFT_draw_line_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_straightline",
+            "colour": "#ffca28",
+            "message0": "TFT画直线 起点x%1 起点y%2 长度%3 %4 颜色%5",                      
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_straightline_start_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_straightline_start_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_straightline_length"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_straightline_mode",
+                    "options":[["水平","H"],["垂直","V"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_straightline_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_straightline_start_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_straightline_start_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_straightline_length": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 30
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.drawFast${TFT_draw_straightline_mode}Line(${TFT_draw_straightline_start_x},${TFT_draw_straightline_start_y},${TFT_draw_straightline_length},${TFT_draw_straightline_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_rectangle",
+            "colour": "#ffca28",
+            "message0": "TFT画矩形 %1 左上角x%2 左上角y%3 宽度%4 高度%5 颜色%6",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_rectangle_mode",
+                    "options":[["空心","draw"],["实心","fill"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_rectangle_start_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_rectangle_start_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_rectangle_width"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_rectangle_length"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_rectangle_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_rectangle_start_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_rectangle_start_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_rectangle_width": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 10
+                        }
+                    }
+                },
+                "TFT_draw_rectangle_length": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 20
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.${TFT_draw_rectangle_mode}Rect(${TFT_draw_rectangle_start_x},${TFT_draw_rectangle_start_y},${TFT_draw_rectangle_width},${TFT_draw_rectangle_length},${TFT_draw_rectangle_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_r_rectangle",
+            "colour": "#ffca28",
+            "message0": "TFT画圆角矩形 %1 左上角x%2 左上角y%3 宽度%4 高度%5 圆角半径%6 颜色%7",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_r_rectangle_mode",
+                    "options":[["空心","draw"],["实心","fill"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_start_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_start_y"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_width"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_length"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_R"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_r_rectangle_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_r_rectangle_start_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_r_rectangle_start_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_r_rectangle_width": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 10
+                        }
+                    }
+                },
+                "TFT_draw_r_rectangle_length": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 20
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.${TFT_draw_r_rectangle_mode}RoundRect(${TFT_draw_r_rectangle_start_x},${TFT_draw_r_rectangle_start_y},${TFT_draw_r_rectangle_width},${TFT_draw_r_rectangle_length},${TFT_draw_r_rectangle_R},${TFT_draw_r_rectangle_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_Circle",
+            "colour": "#ffca28",
+            "message0": "TFT画圆 %1 圆心x%2 圆心y%3 半径%4 %5 颜色%6",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_Circle_mode",
+                    "options":[["空心","draw"],["实心","fill"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_Circle_x"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_Circle_y"
+                },
+                
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_Circle_R"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_Circle_shape",
+                    "options":[["整圆",""],["右上",""],["左上",""],["右下",""],["左下",""]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_Circle_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_Circle_x": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_Circle_y": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 1
+                        }
+                    }
+                },
+                "TFT_draw_Circle_R": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 10
+                        }
+                    }
+                }
+            }
+            },
+            "b4a": {  
+              "code":"tft.${TFT_draw_Circle_mode}Circle(${TFT_draw_Circle_start_x},${TFT_draw_Circle_start_y},${TFT_draw_Circle_width},${TFT_draw_Circle_length},${TFT_draw_Circle_R},${TFT_draw_Circle_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        },
+        {
+            "inputsInline": true,
+            "type": "TFT_draw_triangle",
+            "colour": "#ffca28",
+            "message0": "TFT画三角形 %1 A点x%2 A点y%3 B点x%4 B点y%5 C点x%6 C点y%7 颜色%8",                      
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "TFT_draw_triangle_mode",
+                    "options":[["空心","draw"],["实心","fill"]]
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_Ax"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_Ay"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_Bx"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_By"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_Cx"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_Cy"
+                },
+                {
+                    "type": "input_value",
+                    "name": "TFT_draw_triangle_clock_value"
+                }
+            ],                                
+            "toolbox": {
+            "show": true,
+            "inputs": {
+                "TFT_draw_triangle_Ax": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 14
+                        }
+                    }
+                },
+                "TFT_draw_triangle_Ay": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 55
+                        }
+                    }
+                },
+                "TFT_draw_triangle_Bx": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 45
+                        }
+                    }
+                },
+                "TFT_draw_triangle_By": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 33
+                        }
+                    }
+                },
+                "TFT_draw_triangle_Cx": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 8
+                        }
+                    }
+                },
+                "TFT_draw_triangle_Cy": {
+                    "block": {
+                        "type": "math_number",
+                        "fields": {
+                            "NUM": 43
+                        }
+                    }
+                }                
+            }
+            },
+            "b4a": {  
+              "code":"tft.${TFT_draw_triangle_mode}Triangle(${TFT_draw_triangle_Ax},${TFT_draw_triangle_Ay},${TFT_draw_triangle_Bx},${TFT_draw_triangle_By},${TFT_draw_triangle_Cx},${TFT_draw_triangle_Cy},${TFT_draw_triangle_clock_value});"                                                                                                                                                  
+            },
+            "previousStatement": null,
+            "nextStatement": null
+        }
+    ]
+}
